@@ -24,6 +24,11 @@ class ParserItemInfo(Helper):
 
         self.source_file = source_file
 
+        self.remove_duplicate(
+            default=f"{self.source_file.split("/")[0]}/cars_Unsorted_link.txt",
+            sorted_filename=f"{self.source_file.split("/")[0]}/cars_Sorted_link.txt",
+        )
+
         self.iter_by_item()
 
     def xpath_exists(self, xpath):
@@ -144,7 +149,7 @@ class ParserItemInfo(Helper):
 
 def main():
     return ParserItemInfo(
-        source_file='mobile-phones/mobile-phones_Sorted_link.txt'
+        source_file='cars/cars_Sorted_link.txt'
     )
 
 

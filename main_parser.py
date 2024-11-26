@@ -96,8 +96,9 @@ class MainParser(Helper):
 
     def get_item_link(self):
         self.random_pause_code(start=1, stop=5)
-        for i in range(self.start_page, self.stop_page+1):
-            self.send_by_url(url=f'https://999.md/ro/list/phone-and-communication/mobile-phones?page={i}')
+        for i in range(self.start_page, self.stop_page + 1):
+            self.send_by_url(url=f'https://999.md/ro/list/transport/cars?page={i}')
+            self.random_pause_code(start=1, stop=5)
 
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             try:
@@ -110,20 +111,17 @@ class MainParser(Helper):
                         if 'login' not in link:
                             if 'booster' not in link:
                                 if 'recommendations' not in link:
-                                    self.crate_file(
-                                        filename=f"{self.driver.current_url.split('/')[-1].split('?')[0]}/{self.driver.current_url.split('/')[-1].split('?')[0]}_Unsorted_link.txt",
-                                        mode='a',
-                                        data=link
-                                    )
+                                    if 'favorites' not in link:
+                                        self.crate_file(
+                                            filename=f"{self.driver.current_url.split('/')[-1].split('?')[0]}/{self.driver.current_url.split('/')[-1].split('?')[0]}_Unsorted_link.txt",
+                                            mode='a',
+                                            data=link
+                                        )
 
             except NoSuchElementException:
                 print('element not found')
-            finally:
-                self.close_driver()
-            self.remove_duplicate(
-                default=f"{self.driver.current_url.split('/')[-1].split('?')[0]}/{self.driver.current_url.split('/')[-1].split('?')[0]}_Unsorted_link.txt",
-                sorted_filename=f"{self.driver.current_url.split('/')[-1].split('?')[0]}/{self.driver.current_url.split('/')[-1].split('?')[0]}_Sorted_link.txt",
-            )
+            if i == self.stop_page:
+                return self.close_driver()
 
 
 
@@ -139,7 +137,7 @@ class MainParser(Helper):
 def main():
     return MainParser(
         start_page=1,
-        stop_page=2
+        stop_page=10
     )
 
 

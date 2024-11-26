@@ -10,7 +10,7 @@ The **999.md Listing Scraper** is a Python-based web scraper designed to extract
 - **Dynamic Content Handling**: Handles dynamic web content by scrolling through pages to load all items.  
 - **Filtered Link Collection**: Excludes non-listing links such as login, recommendations, and booster ads.  
 - **Custom Directory and File Management**: Saves collected links in organized directories for easy access.
-- **Scraping Links**: Getting item information as the main information (phone number).
+- **Scraping Links**: Getting item information as the main information is (phone number).
 
 ---
 
@@ -33,8 +33,15 @@ source venv/bin/activate  # Linux/MacOS
 venv\Scripts\activate     # Windows  
 ```
 
-### 2. Setup project configurations
+### 2. Install the required libraries:  
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Setup project configurations
 Website where can you [Get User Agent](https://www.whatismybrowser.com/detect/what-is-my-user-agent/)
+
 ```bash
 #!/bin/bash
 
@@ -67,10 +74,3 @@ echo ".env file created successfully with data:"
 cat "$ENV_FILE"
 
  ```
-
-### Python Libraries  
-
-Install the required libraries:  
-
-```bash
-pip install -r requirements.txt

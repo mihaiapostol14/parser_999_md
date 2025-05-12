@@ -63,18 +63,19 @@ class ParserItemInfo(Helper):
     def get_phone_number(self):
         self.random_pause_code(start=1, stop=4)
 
-        self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.CLASS_NAME, 'adPage__content__footer__wrapper'))
-
+        self.driver.execute_script("arguments[0].scrollIntoView();", self.driver.find_element(By.CLASS_NAME, 'styles_footer__sKQxZ'))
+        self.random_pause_code(start=1, stop=11)
         try:
-            if self.checker.class_exists(class_name='styles_footer__sKQxZ'):
-                phone_number = self.driver.find_element(By.CLASS_NAME, 'styles_footer__sKQxZ').find_element(By.TAG_NAME, 'a').get_attribute('href')
-                phone_number = phone_number.replace('tel:', '')
+            if self.checker.tag_exists(tag_name='a'):
+                for phone in self.driver.find_elements(By.TAG_NAME, 'a'):
+                    if 'tel:' in phone.get_attribute('href'):
+                        phone_number = phone.get_attribute('href').replace('tel:',' ')
 
-                self.crate_file(
-                    filename=f"{self.source_file.split('/')[0]}/{self.source_file.split('/')[0]}_Unsorted_phone_number.txt",
-                    mode='a',
-                    data=phone_number
-                )
+                        self.crate_file(
+                            filename=f"{self.source_file.split('/')[0]}/{self.source_file.split('/')[0]}_Unsorted_phone_number.txt",
+                            mode='a',
+                            data=phone_number
+                        )
 
         except NoSuchElementException:
             self.crate_file(

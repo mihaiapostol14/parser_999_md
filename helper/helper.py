@@ -24,12 +24,15 @@ class Helper:
             file.write(data + '\n')
 
     def remove_duplicate(self,default='', sorted_filename=''):
-        with open(file=default, mode='r+') as file:
-            source = file.read()
-            for i in set(source.split()):
-                # print(i)
-                with open(file=sorted_filename, mode='a', newline='') as file:
-                    file.write(i + '\n')
+        try:
+            with open(file=default, mode='r+') as file:
+                source = file.read()
+                for i in set(source.split()):
+                    # print(i)
+                    with open(file=sorted_filename, mode='a', newline='') as file:
+                        file.write(i + '\n')
+        except FileNotFoundError:
+            print('File Not Found')
 
     def create_file_from_list(self, filename, data_list):
         """

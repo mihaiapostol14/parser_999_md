@@ -6,7 +6,8 @@ from selenium.common.exceptions import NoSuchElementException
 from config import USER_AGENT
 from helper import (
     Helper,
-    ElementChecker
+    ElementChecker,
+    DriverHelper
 )
 
 
@@ -29,28 +30,15 @@ class MainParser(Helper):
         self.start_page = start_page
         self.stop_page = stop_page
         self.checker = ElementChecker(driver=self.driver)
+        self.driver_helper = DriverHelper(driver=self.driver)
 
         self.get_item_link()
 
 
-
-    def send_by_url(self, url):
-        """
-        Navigates to the specified URL using the web driver.
-
-        Args:
-            url (str): The URL to navigate to.
-
-        Raises:
-            WebDriverException: If there is an issue with navigating to the URL.
-        """
-        # Use the web driver to open the specified URL
-        self.driver.get(url=url)
-
     def get_item_link(self):
         self.random_pause_code(start=1, stop=5)
         for i in range(self.start_page, self.stop_page + 1):
-            self.send_by_url(url=f'https://999.md/ro/list/transport/cars?page={i}')
+            self.driver_helper.send_by_url(url=f'https://999.md/ro/list/transport/cars?page={i}')
             self.random_pause_code(start=1, stop=5)
 
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -61,7 +49,7 @@ class MainParser(Helper):
 
                     for link in container:
                         link = link.get_attribute('href')
-                        if 'login' not in link:
+                        if 'login?' not in link:
                             if 'booster' not in link:
                                 if 'recommendations' not in link:
                                     if 'favorites' not in link:
@@ -74,23 +62,13 @@ class MainParser(Helper):
             except NoSuchElementException:
                 print('element not found')
             if i == self.stop_page:
-                return self.close_driver()
-
-
-
-    def close_driver(self):
-        """Close the WebDriver instance and quits the browser.
-
-        This method closes the current window and terminates the WebDriver session.
-        """
-        self.driver.close()  # Close the current window
-        self.driver.quit()  # Quit the WebDriver session and close all associated windows
+                return self.driver_helper.close_driver()
 
 
 def main():
     return MainParser(
         start_page=1,
-        stop_page=10
+        stop_page=2
     )
 
 
